@@ -105,6 +105,13 @@
     z-index: 1000;
     display:none;
 }
+.jnNav .subitem {
+    float: left;
+    height: auto !important;
+    min-height: 100px;
+    padding: 10px 12px;
+    width: 450px;
+}
 .jnNav .subitem dl {
     border-top: 1px dashed #C4C4C4;
     overflow: hidden;
@@ -154,6 +161,7 @@
 .jnNav .subitem em.noborder {
     border-right: 0 none;
 }
+
 #content{
     clear: left;
     margin: 0 auto;
