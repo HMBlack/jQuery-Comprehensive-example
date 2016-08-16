@@ -9,6 +9,9 @@ $(function(){
     nav();
     hot();
     ad();
+    tooltip();
+    imgSlide();
+    imgHover();
 });
 
 //搜索文本框效果
@@ -102,5 +105,62 @@ function showImg(index){
 
 //超链接文字提示
 function tooltip(){
+    var x = 10;
+    var y = 20;
+    $("a.tooltip").mouseover(function(e){
+        this.myTitle = this.title;
+        this.title = "";
+        var tooltip = "<div id='tooltip'>" + this.title + "</div>";
+        $("body").append(tooltip);
+        $("#tooltip").css({
+            "top":(e.pageY + y) + "px",
+            "left":(e.pageX + x) + "px"
+        }).show("fast");
+    }).mouseout(function(){
+        this.title = this.myTitle;
+        $("#tooltip").remove();
+    }).mousemove(function(e){
+        $("#tooltip").css({
+            "top":(e.pageY + y) + "px",
+            "left":(e.pageX + x) + "px"
+        });
+    });
+}
+
+//品牌活动模块横向滚动
+function imgSlide(){
+    var $jnBrandTabA = $("#jnBrandTab li a");
+    $jnBrandTabA.click(function(){
+        $(this).parent().addClass("chos").siblings().removeClass("chos");
+        var index = $jnBrandTabA.index(this);
+        showBrandList(index);
+        return false;
+    }).eq(0).click();
+}
+
+function showBrandList(index){
+    var $rollobj = $("#jnBrandList");
+    var rollWidth = $rollobj.find("li").outerWidth();
+    rollWidth = rollWidth*4;
+    $rollobj.stop(true,false).animate({
+        left:-rollWidth*index
+    },1000);
+}
+
+//滑过图片出现放大镜效果
+function imgHover(){
+    $("#jnBrandList li").each(function(index){
+        var spanHtml = '<span style="position:absolute;top:0;left:5px; width: 183px;height: 164px;" class="imageMask"></span>';
+        $(spanHtml).appendTo(this);
+    });
+    $("#jnBrandList").delegate(".imageMask","hover",function(){
+        $(this).toggleClass("imageOver");
+    });
+
+    //最后一段或者
+    //$("#jnBrandList").find(".imageMask").live("hover",function(){
+    //    $(this).toggleClass("imageOver");
+    //});
+
 
 }

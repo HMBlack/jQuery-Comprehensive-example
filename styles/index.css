@@ -105,6 +105,10 @@
     color: #008CD7;
     text-decoration: none;
 }
+#tooltip{
+    position: absolute; border: 1px solid #333;
+    background: #f7f5d1; padding: 1px; color: #333; display: none;
+}
 
 #jnBrand {
     float: left;
@@ -199,4 +203,12 @@
 #jnBrandContent li a:hover{
     color: #008CD7;
     text-decoration: none;
+}
+.imageMask{
+    cursor: pointer; opacity: 0; background: #ffffff;
+}
+.imageOver{
+    background:rgba(0,0,0,0) url("../images/zoom.gif") no-repeat 50% 50%;
+    filter: alpha(opacity = 60);
+    opacity: 0.6;
 }
