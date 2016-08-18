@@ -12,7 +12,15 @@ $(function(){
     tooltip();
     imgSlide();
     imgHover();
+    use_jqzoom();
+    switchImg();
+    switchColor();
+    sizeAndprice();
+    star();
+    finish();
 });
+
+//index
 
 //搜索文本框效果
 function input(){
@@ -161,6 +169,110 @@ function imgHover(){
     //$("#jnBrandList").find(".imageMask").live("hover",function(){
     //    $(this).toggleClass("imageOver");
     //});
-
-
 }
+
+
+//detail
+
+//产品缩略图
+function use_jqzoom(){
+    $('.jqzoom').jqzoom({
+        zoomType: 'standard',
+        lens:true,
+        preloadImages: false,
+        alwaysOn:false,
+        zoomWidth: 340,
+        zoomHeight: 340,
+        xOffset:10,
+        yOffset:0,
+        position:'right'
+    });
+}
+
+//产品小图切换大图
+function switchImg(){
+    $("#jnProitem ul.imgList li a").bind("click",function(){
+        var imgSrc = $(this).find("img").attr("src");
+        var i = imgSrc.lastIndexOf(".");
+        var unit = imgSrc.substring(i);
+        imgSrc = imgSrc.substring(0,i);
+        var imgSrc_big = imgSrc + "_big" + unit;
+        $("#thickImg").attr("href",imgSrc_big);
+    });
+}
+
+//产品换颜色
+function switchColor(){
+    $(".color_change ul li img").click(function(){
+        $(this).addClass("hover")
+            .parent().siblings().find("img").removeClass("hover");
+        var imgSrc = $(this).attr("src");
+        var i = imgSrc.lastIndexOf(".");
+        var unit = imgSrc.substring(i);
+        imgSrc = imgSrc.substring(0,i);
+        var imgSrc_small = imgSrc + "_one_small"+ unit;
+        var imgSrc_big = imgSrc + "_one_big"+ unit;
+        $("#bigImg").attr({"src": imgSrc_small });
+        $("#thickImg").attr("href", imgSrc_big);
+        var alt = $(this).attr("alt");
+        $(".color_change strong").text(alt);
+        var newImgSrc = imgSrc.replace("images/pro_img/","");
+        $("#jnProitem .imgList li").hide();
+        $("#jnProitem .imgList").find(".imgList_" + newImgSrc).show();
+        $("#jnProitem .imgList").find(".imgList_" + newImgSrc).eq(0).find("a").click();
+    });
+}
+
+//产品尺寸和价格计算
+function sizeAndprice(){
+    $(".pro_size li").click(function(){
+        $(this).addClass("cur").siblings().removeClass("cur");
+        $(this).parents("ul").siblings("strong").text($(this).text());
+    });
+
+    var $span = $(".pro_price strong");
+    var price = $span.text();
+    $("#num_sort").change(function(){
+        var num = $(this).val();
+        var amount = num*price;
+        $span.text(amount);
+    }).change();
+}
+
+//星级评分
+function star(){
+    $("ul.rating li a").click(function(){
+        var title = $(this).attr("title");
+        alert("您给此商品的评分是："+title);
+        var cl = $(this).parent().attr("class");
+        $(this).parent().parent().removeClass().addClass("rating " + cl + "star");
+        $(this).blur();
+        return false;
+    });
+}
+
+//内容提交
+function finish(){
+    var $product = $(".jnProDetail");
+    $("#cart a").click(function (e) {
+        var pro_name = $product.find("h4:first").text();
+        var pro_size = $product.find(".pro_size strong").text();
+        var pro_color =  $(".color_change strong").text();
+        var pro_num = $product.find("#num_sort").val();
+        var pro_price = $product.find(".pro_price strong").text();
+        var dialog = "感谢您的购买。" +
+            "<div style='font-size:12px;font-weight:400;'>" +
+            "您购买的产品是："+pro_name+"；"+
+            "尺寸是："+pro_size+"；"+
+            "颜色是："+pro_color+"；"+
+            "数量是："+pro_num+"；"+
+            "总价是："+pro_price +"元。" +
+            "</div>";
+        $("#jnDialogContent").html(dialog);
+        $('#basic-dialog-ok').modal({
+            overlayClose:true
+        });
+        return false;//避免页面跳转
+    });
+}
+
